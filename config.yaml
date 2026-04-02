@@ -33,8 +33,6 @@ providers:
         display_name: GLM-4 Flash
       - id: glm-5
         display_name: GLM-5
-      - id: glm-5.1
-        display_name: GLM-5.1
       - id: glm-5-turbo
         display_name: GLM-5 Turbo
       - id: glm-5v-turbo
