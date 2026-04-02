@@ -96,9 +96,9 @@ def main():
                     ttft = "N/A"
 
                 st.metric(
-                    label=f"{status_emoji} {metric['provider_display_name']}",
+                    label=f"{status_emoji} {metric['model_display_name']}",
                     value=speed,
-                    delta=f"TTFT: {ttft}",
+                    delta=f"TTFT: {ttft} | {metric['provider_display_name']}",
                 )
 
         if len(latest) > 4:
