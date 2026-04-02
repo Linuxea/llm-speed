@@ -187,8 +187,11 @@ def get_metrics(
     return [dict(row) for row in rows]
 
 
-def get_latest_metrics() -> list[dict]:
+def get_latest_metrics(success_only: bool = True) -> list[dict]:
     """Get the most recent metric for each model.
+
+    Args:
+        success_only: If True, only return successful metrics.
 
     Returns:
         List of latest metric records per model.
@@ -196,7 +199,9 @@ def get_latest_metrics() -> list[dict]:
     conn = get_connection()
     cursor = conn.cursor()
 
-    query = """
+    success_filter = "AND m.success = 1" if success_only else ""
+
+    query = f"""
         SELECT
             m.recorded_at,
             m.ttft_ms,
@@ -211,8 +216,9 @@ def get_latest_metrics() -> list[dict]:
         JOIN models mo ON m.model_id = mo.id
         JOIN providers p ON mo.provider_id = p.id
         WHERE m.id IN (
-            SELECT MAX(id) FROM metrics GROUP BY model_id
+            SELECT MAX(id) FROM metrics WHERE success = 1 GROUP BY model_id
         )
+        {success_filter}
         ORDER BY p.display_name, mo.display_name
     """
 
