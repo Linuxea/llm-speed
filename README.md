@@ -14,7 +14,11 @@
 ### 1. 安装依赖
 
 ```bash
+# Python 后端依赖
 pip install -r requirements.txt
+
+# Next.js 前端依赖（可选）
+cd web && npm install && cd ..
 ```
 
 ### 2. 配置 API Keys
@@ -27,18 +31,29 @@ cp .env.example .env
 ### 3. 启动服务
 
 ```bash
-# 方式一：使用启动脚本（同时启动采集器和看板）
-./start.sh
+# 启动后端 API（必须）
+python -m api.main &
 
-# 方式二：分别启动
-python -m collector.main --once    # 运行一次采集
-python -m collector.main           # 持续采集
-streamlit run dashboard/app.py     # 启动看板
+# 选择前端：
+
+# 方式一：Streamlit（简单快速）
+streamlit run dashboard/app.py
+# 访问 http://localhost:8501
+
+# 方式二：Next.js（美观现代）
+cd web && npm run dev
+# 访问 http://localhost:3000
 ```
 
-### 4. 访问看板
+## 前端对比
 
-打开浏览器访问 http://localhost:8501
+| 特性 | Streamlit | Next.js |
+|------|-----------|---------|
+| 地址 | http://localhost:8501 | http://localhost:3000 |
+| 启动速度 | 快 | 较慢（首次编译） |
+| 界面 | 简洁实用 | 美观现代 |
+| 交互 | 基础 | 流畅 |
+| 自定义 | 有限 | 高度可定制 |
 
 ## 配置说明
 
@@ -101,9 +116,15 @@ llm-speed/
 │   ├── main.py           # 入口
 │   └── tester.py         # API 测试
 │
-├── dashboard/            # Streamlit 看板
+├── api/                  # FastAPI 后端
+│   └── main.py           # REST API
+│
+├── dashboard/            # Streamlit 前端
 │   ├── app.py            # 应用入口
 │   └── charts.py         # 图表生成
+│
+├── web/                  # Next.js 前端
+│   └── src/app/          # 页面组件
 │
 ├── start.sh              # 启动脚本
 └── requirements.txt      # 依赖
@@ -114,5 +135,6 @@ llm-speed/
 - Python 3.10+
 - OpenAI SDK (兼容多家服务商)
 - SQLite
-- Streamlit
-- Plotly
+- FastAPI
+- Streamlit + Plotly
+- Next.js + Recharts

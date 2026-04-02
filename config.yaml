@@ -37,3 +37,18 @@ providers:
         display_name: GLM-5 Turbo
       - id: glm-5v-turbo
         display_name: GLM-5V Turbo
+
+  - name: moonshot
+    display_name: Moonshot
+    base_url: https://api.moonshot.cn/v1
+    models:
+      - id: kimi-k2-0905-preview
+        display_name: Kimi K2 0905
+      - id: kimi-k2-0711-preview
+        display_name: Kimi K2 0711
+      - id: kimi-k2-turbo-preview
+        display_name: Kimi K2 Turbo
+      - id: kimi-k2-thinking
+        display_name: Kimi K2 Thinking
+      - id: kimi-k2-thinking-turbo
+        display_name: Kimi K2 Thinking Turbo

@@ -1,4 +1,4 @@
-"""Streamlit dashboard for LLM Speed Monitor - Data Dashboard Style."""
+"""Streamlit dashboard for LLM Speed Monitor - Light Theme."""
 
 import sys
 from pathlib import Path
@@ -24,36 +24,37 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# === Custom CSS - Dashboard Style ===
+# === Custom CSS - Light Theme ===
 st.markdown("""
 <style>
     /* === Main Theme === */
     .stApp {
-        background-color: #0e1117;
+        background-color: #f6f8fa;
     }
 
     /* === Sidebar === */
     [data-testid="stSidebar"] {
-        background-color: #161b22;
+        background-color: #ffffff;
+        border-right: 1px solid #d0d7de;
     }
 
     [data-testid="stSidebar"] .st-header {
-        color: #8b949e;
+        color: #57606a;
     }
 
     /* === Cards === */
     div[data-testid="stMetric"] {
-        background: linear-gradient(145deg, #161b22, #1c2128);
-        border: 1px solid #30363d;
+        background: #ffffff;
+        border: 1px solid #d0d7de;
         border-radius: 12px;
         padding: 20px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
 
     div[data-testid="stMetric"] label {
         font-size: 14px;
         font-weight: 600;
-        color: #8b949e;
+        color: #57606a;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -61,65 +62,71 @@ st.markdown("""
     div[data-testid="stMetric"] [data-testid="stMetricValue"] {
         font-size: 28px;
         font-weight: 700;
-        color: #58a6ff;
+        color: #0969da;
     }
 
     div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
         font-size: 13px;
-        color: #7ee787;
+        color: #1a7f37;
     }
 
     /* === Headers === */
     .stHeader h1, .stHeader h2, .stHeader h3 {
-        color: #f0f6fc;
+        color: #24292f;
     }
 
     h1 {
         font-size: 2rem;
         font-weight: 700;
-        border-bottom: 2px solid #238636;
+        border-bottom: 2px solid #1a7f37;
         padding-bottom: 10px;
     }
 
     h2 {
         font-size: 1.5rem;
         font-weight: 600;
-        color: #c9d1d9;
+        color: #24292f;
     }
 
     /* === Dividers === */
     hr {
-        border-color: #30363d;
+        border-color: #d0d7de;
     }
 
     /* === Dataframe === */
     .stDataFrame {
-        background-color: #161b22;
-        border: 1px solid #30363d;
+        background-color: #ffffff;
+        border: 1px solid #d0d7de;
         border-radius: 8px;
     }
 
     /* === Captions === */
     .stCaption {
-        color: #8b949e;
+        color: #57606a;
     }
 
     /* === Info/Warnings === */
     .stAlert {
-        background-color: #161b22;
-        border: 1px solid #30363d;
+        background-color: #ffffff;
+        border: 1px solid #d0d7de;
     }
 
     /* === Buttons === */
     .stButton button {
-        background-color: #238636;
+        background-color: #1a7f37;
         border: none;
         border-radius: 6px;
+        color: white;
     }
 
     /* === Radio/Multiselect === */
     [data-baseweb="radio"] {
-        color: #c9d1d9;
+        color: #24292f;
+    }
+
+    /* === Sidebar labels === */
+    [data-testid="stSidebar"] label {
+        color: #24292f;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -128,7 +135,7 @@ st.markdown("""
 def render_status_card(metric: dict):
     """Render a single status card with custom styling."""
     status = "online" if metric["success"] else "offline"
-    status_color = "#3fb950" if metric["success"] else "#f85149"
+    status_color = "#1a7f37" if metric["success"] else "#cf222e"
 
     if metric["success"] and metric.get("tokens_per_second"):
         speed = f"{metric['tokens_per_second']:.1f}"
@@ -142,15 +149,15 @@ def render_status_card(metric: dict):
 
     st.markdown(f"""
     <div style="
-        background: linear-gradient(145deg, #161b22, #1c2128);
-        border: 1px solid #30363d;
+        background: #ffffff;
+        border: 1px solid #d0d7de;
         border-radius: 12px;
         padding: 20px;
         margin: 5px 0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     ">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 14px; font-weight: 600; color: #8b949e; text-transform: uppercase;">
+            <span style="font-size: 14px; font-weight: 600; color: #57606a; text-transform: uppercase;">
                 {model}
             </span>
             <span style="
@@ -164,11 +171,11 @@ def render_status_card(metric: dict):
                 ● {status.upper()}
             </span>
         </div>
-        <div style="font-size: 32px; font-weight: 700; color: #58a6ff; margin: 8px 0;">
-            {speed} <span style="font-size: 14px; color: #8b949e; font-weight: 400;">t/s</span>
+        <div style="font-size: 32px; font-weight: 700; color: #0969da; margin: 8px 0;">
+            {speed} <span style="font-size: 14px; color: #57606a; font-weight: 400;">t/s</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #8b949e;">
-            <span>TTFT: <span style="color: #7ee787;">{ttft} ms</span></span>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #57606a;">
+            <span>TTFT: <span style="color: #1a7f37;">{ttft} ms</span></span>
             <span>{provider}</span>
         </div>
     </div>

@@ -1,28 +1,28 @@
-"""Chart generation functions for the dashboard - Dark Theme."""
+"""Chart generation functions for the dashboard - Light Theme."""
 
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
-# === Plotly Dark Theme ===
+# === Plotly Light Theme ===
 PLOTLY_THEME = {
-    "bgcolor": "#0e1117",
-    "paper_bgcolor": "#161b22",
-    "font_color": "#c9d1d9",
-    "grid_color": "#30363d",
-    "legend_bgcolor": "#161b22",
+    "bgcolor": "#f6f8fa",
+    "paper_bgcolor": "#ffffff",
+    "font_color": "#24292f",
+    "grid_color": "#d0d7de",
+    "legend_bgcolor": "#ffffff",
 }
 
 # Color palette for different models
 COLORS = [
-    "#58a6ff",  # Blue
-    "#3fb950",  # Green
-    "#f78166",  # Orange
-    "#a371f7",  # Purple
-    "#79c0ff",  # Light Blue
-    "#7ee787",  # Light Green
-    "#ffa657",  # Light Orange
-    "#d2a8ff",  # Light Purple
+    "#0969da",  # Blue
+    "#1a7f37",  # Green
+    "#bf5700",  # Orange
+    "#8250df",  # Purple
+    "#0550ae",  # Dark Blue
+    "#116329",  # Dark Green
+    "#953800",  # Dark Orange
+    "#6e40c9",  # Dark Purple
 ]
 
 
@@ -30,11 +30,11 @@ def create_speed_trend_chart(df: pd.DataFrame, title: str = "") -> go.Figure:
     """Create a line chart showing token speed over time."""
     if df.empty:
         fig = go.Figure()
-        fig.add_annotation(text="暂无数据", showarrow=False, font=dict(size=20, color="#8b949e"))
+        fig.add_annotation(text="暂无数据", showarrow=False, font=dict(size=20, color="#57606a"))
         fig.update_layout(
             xaxis=dict(visible=False),
             yaxis=dict(visible=False),
-            plot_bgcolor=PLOTLY_THEME["bgcolor"],
+            plot_bgcolor=PLOTLY_THEME["paper_bgcolor"],
             paper_bgcolor=PLOTLY_THEME["paper_bgcolor"],
         )
         return fig
@@ -81,11 +81,10 @@ def create_speed_trend_chart(df: pd.DataFrame, title: str = "") -> go.Figure:
             font=dict(color=PLOTLY_THEME["font_color"], size=11),
         ),
         hovermode="x unified",
-        plot_bgcolor=PLOTLY_THEME["bgcolor"],
+        plot_bgcolor=PLOTLY_THEME["paper_bgcolor"],
         paper_bgcolor=PLOTLY_THEME["paper_bgcolor"],
         font=dict(color=PLOTLY_THEME["font_color"]),
-        height=350,
-        margin=dict(t=20, b=40, l=60, r=20),
+        margin=dict(t=60, b=40, l=60, r=40),
     )
 
     return fig
@@ -95,11 +94,11 @@ def create_ttft_trend_chart(df: pd.DataFrame, title: str = "") -> go.Figure:
     """Create a line chart showing TTFT over time."""
     if df.empty:
         fig = go.Figure()
-        fig.add_annotation(text="暂无数据", showarrow=False, font=dict(size=20, color="#8b949e"))
+        fig.add_annotation(text="暂无数据", showarrow=False, font=dict(size=20, color="#57606a"))
         fig.update_layout(
             xaxis=dict(visible=False),
             yaxis=dict(visible=False),
-            plot_bgcolor=PLOTLY_THEME["bgcolor"],
+            plot_bgcolor=PLOTLY_THEME["paper_bgcolor"],
             paper_bgcolor=PLOTLY_THEME["paper_bgcolor"],
         )
         return fig
@@ -146,11 +145,10 @@ def create_ttft_trend_chart(df: pd.DataFrame, title: str = "") -> go.Figure:
             font=dict(color=PLOTLY_THEME["font_color"], size=11),
         ),
         hovermode="x unified",
-        plot_bgcolor=PLOTLY_THEME["bgcolor"],
+        plot_bgcolor=PLOTLY_THEME["paper_bgcolor"],
         paper_bgcolor=PLOTLY_THEME["paper_bgcolor"],
         font=dict(color=PLOTLY_THEME["font_color"]),
-        height=350,
-        margin=dict(t=20, b=40, l=60, r=20),
+        margin=dict(t=60, b=40, l=60, r=40),
     )
 
     return fig
@@ -160,31 +158,28 @@ def create_performance_bar_chart(df: pd.DataFrame, title: str = "") -> go.Figure
     """Create a horizontal bar chart comparing average performance."""
     if df.empty:
         fig = go.Figure()
-        fig.add_annotation(text="暂无数据", showarrow=False, font=dict(size=20, color="#8b949e"))
+        fig.add_annotation(text="暂无数据", showarrow=False, font=dict(size=20, color="#57606a"))
         fig.update_layout(
             xaxis=dict(visible=False),
             yaxis=dict(visible=False),
-            plot_bgcolor=PLOTLY_THEME["bgcolor"],
+            plot_bgcolor=PLOTLY_THEME["paper_bgcolor"],
             paper_bgcolor=PLOTLY_THEME["paper_bgcolor"],
         )
         return fig
 
+    # Sort by speed ascending (so fastest is at top)
     df = df.sort_values("tokens_per_second", ascending=True)
 
     fig = go.Figure()
-
-    colors = [COLORS[i % len(COLORS)] for i in range(len(df))]
 
     fig.add_trace(go.Bar(
         y=df["model_display_name"],
         x=df["tokens_per_second"],
         orientation="h",
-        text=df["tokens_per_second"].apply(lambda x: f"<b>{x:.1f}</b>"),
-        textposition="outside",
-        textfont=dict(color=PLOTLY_THEME["font_color"], size=12),
         marker=dict(
-            color=colors,
-            line=dict(color="#30363d", width=1),
+            color=df["tokens_per_second"],
+            colorscale="Blues",
+            line=dict(color="#d0d7de", width=1),
         ),
         hovertemplate="<b>%{y}</b><br>%{x:.1f} t/s<extra></extra>",
     ))
@@ -201,7 +196,7 @@ def create_performance_bar_chart(df: pd.DataFrame, title: str = "") -> go.Figure
             title="",
             tickfont=dict(color=PLOTLY_THEME["font_color"], size=11),
         ),
-        plot_bgcolor=PLOTLY_THEME["bgcolor"],
+        plot_bgcolor=PLOTLY_THEME["paper_bgcolor"],
         paper_bgcolor=PLOTLY_THEME["paper_bgcolor"],
         font=dict(color=PLOTLY_THEME["font_color"]),
         height=max(300, len(df) * 45),
