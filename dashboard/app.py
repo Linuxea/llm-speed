@@ -70,7 +70,8 @@ def main():
     df = pd.DataFrame(filtered_metrics)
 
     if not df.empty:
-        df["recorded_at"] = pd.to_datetime(df["recorded_at"])
+        # Parse UTC time and convert to local timezone
+        df["recorded_at"] = pd.to_datetime(df["recorded_at"], utc=True).dt.tz_convert('Asia/Shanghai')
 
     # === Real-time Status Cards ===
     st.header("📊 实时状态")
@@ -158,7 +159,8 @@ def main():
     st.divider()
     if not df.empty:
         latest_time = df["recorded_at"].max()
-        st.caption(f"最后更新: {latest_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        # Convert to local time string without timezone info for display
+        st.caption(f"最后更新: {latest_time.strftime('%Y-%m-%d %H:%M:%S')} (CST)")
     else:
         st.caption("等待数据...")
 
