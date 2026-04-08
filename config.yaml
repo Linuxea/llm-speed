@@ -31,3 +31,19 @@ providers:
     models:
       - id: kimi-k2.5
         display_name: Kimi K2.5
+
+  - name: minimax
+    display_name: MiniMax
+    base_url: https://api.minimax.chat/v1
+    models:
+      - id: minimax-m2.5
+        display_name: MiniMax M2.5
+      - id: minimax-m2.7
+        display_name: MiniMax M2.7
+
+  - name: dashscope
+    display_name: 通义千问
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    models:
+      - id: qwen3.6-plus
+        display_name: Qwen 3.6 Plus
