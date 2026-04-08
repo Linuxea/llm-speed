@@ -2,6 +2,8 @@
 
 实时监控多家大模型服务商的 API 性能，包括 Token 生成速度和响应延迟。
 
+![Dashboard Preview](docs/dashboard-full.png)
+
 ## 功能
 
 - 实时监控：定时测试各模型 API 的响应速度
