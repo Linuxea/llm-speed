@@ -1,59 +1,48 @@
-# 🚀 LLM Speed Monitor
+# LLM Speed Monitor
 
 实时监控多家大模型服务商的 API 性能，包括 Token 生成速度和响应延迟。
 
 ## 功能
 
-- 📊 **实时监控**: 定时测试各模型 API 的响应速度
-- 📈 **趋势分析**: 查看历史性能数据变化趋势
-- 🏆 **性能排行**: 对比不同服务商的性能表现
-- 🔌 **多服务商支持**: 支持所有 OpenAI 兼容的 API
+- 实时监控：定时测试各模型 API 的响应速度
+- 趋势分析：查看历史性能数据变化趋势
+- 性能排行：对比不同服务商的性能表现
+- 多服务商支持：支持所有 OpenAI 兼容的 API
 
 ## 快速开始
 
-### 1. 安装依赖
-
-```bash
-# Python 后端依赖
-pip install -r requirements.txt
-
-# Next.js 前端依赖（可选）
-cd web && npm install && cd ..
-```
-
-### 2. 配置 API Keys
+### 1. 配置 API Keys
 
 ```bash
 cp .env.example .env
 # 编辑 .env 文件，填入你的 API Keys
 ```
 
-### 3. 启动服务
+### 2. 启动服务
+
+启动脚本会自动安装依赖：
 
 ```bash
-# 启动后端 API（必须）
-python -m api.main &
+# Streamlit 前端（默认）
+./start.sh
 
-# 选择前端：
+# Next.js 前端
+./start.sh nextjs
 
-# 方式一：Streamlit（简单快速）
-streamlit run dashboard/app.py
-# 访问 http://localhost:8501
+# 仅后端（API + 采集器）
+./start.sh backend
 
-# 方式二：Next.js（美观现代）
-cd web && npm run dev
-# 访问 http://localhost:3000
+# 两种前端都启动
+./start.sh all
 ```
 
-## 前端对比
+## 当前监控模型
 
-| 特性 | Streamlit | Next.js |
-|------|-----------|---------|
-| 地址 | http://localhost:8501 | http://localhost:3000 |
-| 启动速度 | 快 | 较慢（首次编译） |
-| 界面 | 简洁实用 | 美观现代 |
-| 交互 | 基础 | 流畅 |
-| 自定义 | 有限 | 高度可定制 |
+| 厂商 | 模型 |
+|------|------|
+| DeepSeek | DeepSeek Chat、DeepSeek Reasoner |
+| 智谱 AI | GLM-5、GLM-5.1 |
+| Moonshot | Kimi K2.5 |
 
 ## 配置说明
 
@@ -61,14 +50,14 @@ cd web && npm run dev
 
 ```yaml
 collector:
-  interval_minutes: 5      # 采集间隔（分钟）
-  timeout_seconds: 60      # API 超时时间
-  test_prompt: "..."       # 测试用的 prompt
-  max_tokens: 100          # 最大生成 token 数
+  interval_minutes: 1       # 采集间隔（分钟）
+  timeout_seconds: 60       # API 超时时间
+  test_prompt: "..."        # 测试用的 prompt
+  max_tokens: 100           # 最大生成 token 数
 
 providers:
-  - name: deepseek         # 服务商标识（用于 API Key 命名）
-    display_name: DeepSeek # 显示名称
+  - name: deepseek          # 服务商标识（用于 API Key 命名）
+    display_name: DeepSeek  # 显示名称
     base_url: https://api.deepseek.com/v1
     models:
       - id: deepseek-chat
@@ -81,8 +70,8 @@ API Key 命名规则：`{PROVIDER_NAME}_API_KEY`（全大写）
 
 ```env
 DEEPSEEK_API_KEY=sk-xxxxx
-OPENAI_API_KEY=sk-xxxxx
 ZHIPU_API_KEY=xxxxx
+MOONSHOT_API_KEY=sk-xxxxx
 ```
 
 ## 添加新的服务商
@@ -127,13 +116,13 @@ llm-speed/
 │   └── src/app/          # 页面组件
 │
 ├── start.sh              # 启动脚本
-└── requirements.txt      # 依赖
+└── requirements.txt      # Python 依赖
 ```
 
 ## 技术栈
 
 - Python 3.10+
-- OpenAI SDK (兼容多家服务商)
+- OpenAI SDK（兼容多家服务商）
 - SQLite
 - FastAPI
 - Streamlit + Plotly
