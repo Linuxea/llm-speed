@@ -9,6 +9,16 @@ MODE=${1:-streamlit}
 
 echo "🚀 Starting LLM Speed Monitor..."
 
+# Install Python dependencies
+echo "📦 Checking Python dependencies..."
+pip install -q -r requirements.txt
+
+# Install Node.js dependencies (if needed)
+if [ ! -d "web/node_modules" ]; then
+    echo "📦 Installing Node.js dependencies..."
+    cd web && npm install && cd ..
+fi
+
 # Check if .env exists
 if [ ! -f .env ]; then
     echo "⚠️  .env file not found."

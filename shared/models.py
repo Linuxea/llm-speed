@@ -46,8 +46,6 @@ class MetricResult:
     total_time_ms: Optional[float] = None
     prompt_tokens: Optional[int] = None
     completion_tokens: Optional[int] = None
-    reasoning_tokens: Optional[int] = None  # For reasoning models
     tokens_per_second: Optional[float] = None
-    is_reasoning_model: bool = False
     success: bool = False
     error_message: Optional[str] = None

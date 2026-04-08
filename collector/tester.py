@@ -81,7 +81,6 @@ async def _test_single_model(
         # Measure TTFT (Time To First Token)
         # Note: Reasoning models (like GLM-5) use reasoning_content instead of content
         first_chunk = None
-        is_reasoning_model = False
 
         async for chunk in response:
             if chunk.choices:
@@ -93,7 +92,6 @@ async def _test_single_model(
                 # Check for reasoning content (GLM-5, DeepSeek Reasoner, etc.)
                 if hasattr(delta, 'reasoning_content') and delta.reasoning_content:
                     first_chunk = chunk
-                    is_reasoning_model = True
                     break
 
         ttft_ms = (time.time() - start_time) * 1000 if first_chunk else None
@@ -101,17 +99,11 @@ async def _test_single_model(
         # Consume remaining stream and get usage
         completion_tokens = 0
         prompt_tokens = 0
-        reasoning_tokens = 0
 
         async for chunk in response:
             if chunk.usage:
                 completion_tokens = chunk.usage.completion_tokens
                 prompt_tokens = chunk.usage.prompt_tokens
-                # Check for reasoning tokens details
-                if hasattr(chunk.usage, 'completion_tokens_details'):
-                    details = chunk.usage.completion_tokens_details
-                    if hasattr(details, 'reasoning_tokens'):
-                        reasoning_tokens = details.reasoning_tokens
 
         total_time_ms = (time.time() - start_time) * 1000
 
@@ -129,9 +121,7 @@ async def _test_single_model(
             total_time_ms=total_time_ms,
             prompt_tokens=prompt_tokens,
             completion_tokens=completion_tokens,
-            reasoning_tokens=reasoning_tokens if reasoning_tokens > 0 else None,
             tokens_per_second=tokens_per_second,
-            is_reasoning_model=is_reasoning_model,
             success=True,
         )
 
