@@ -219,7 +219,7 @@ def get_latest_metrics(success_only: bool = True) -> list[dict]:
             SELECT MAX(id) FROM metrics WHERE success = 1 GROUP BY model_id
         )
         {success_filter}
-        ORDER BY p.display_name, mo.display_name
+        ORDER BY m.tokens_per_second DESC
     """
 
     cursor.execute(query)
