@@ -3,7 +3,7 @@ collector:
   interval_minutes: 1
   timeout_seconds: 60
   test_prompt: "请用中文简短介绍一下人工智能，不超过100字。"
-  max_tokens: 100
+  max_tokens: 1000
 
 # Provider configurations
 providers:
@@ -11,10 +11,19 @@ providers:
     display_name: DeepSeek
     base_url: https://api.deepseek.com/v1
     models:
-      - id: deepseek-chat
-        display_name: DeepSeek Chat
-      - id: deepseek-reasoner
-        display_name: DeepSeek Reasoner
+      - id: deepseek-v4-flash
+        display_name: DeepSeek V4 Flash
+      - id: deepseek-v4-pro
+        display_name: DeepSeek V4 Pro
+
+  - name: bailian
+    display_name: 阿里百炼
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    models:
+      - id: deepseek-v4-flash
+        display_name: DeepSeek V4 Flash (百炼)
+      - id: deepseek-v4-pro
+        display_name: DeepSeek V4 Pro (百炼)
 
   - name: zhipu
     display_name: 智谱 AI
